@@ -1,14 +1,24 @@
+import { Route, Routes , Navigate } from 'react-router-dom';
 import './App.css'
 import HomePage from './pages/home/home';
 import Login from './pages/login/login';
 import SignUp from './pages/signup/signup';
+import { Toaster} from 'react-hot-toast';
+import { useAuthContext } from './context/AuthContext';
 
 function App() {
+
+  const { authUser } = useAuthContext();
+
    return (
     <div className='p-4 h-screen flex items-center justify-center'>
-      {/* <Login/> */}
-      {/* <SignUp/> */}
-      <HomePage/>
+
+      <Routes>
+        <Route path='/' element={authUser ? <HomePage/> : <Navigate to={'/login'}/>}/>
+        <Route path='/login' element={ authUser ? <Navigate to='/'/> : <Login/>}/>
+        <Route path='/signup' element={ authUser ? <Navigate to='/' /> : <SignUp/>} />
+      </Routes>
+      <Toaster/>
     </div>
    );
 }
